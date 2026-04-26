@@ -30,7 +30,7 @@ The most important constraints (so they aren't missed):
 - **Keep changes focused** — don't refactor or "improve" unrelated code.
 - **When uncertain about an architectural decision, ask** rather than guess. If a well-established library solves the problem, propose it instead of reimplementing.
 - **Update this file** (`CLAUDE.md`) on any significant change to code or architecture — `Docs/Directives.md` requires it.
-- **Every change should be properly committed.** The working directory is *not* currently a git repo — if you're about to make changes, surface this so the user can `git init` (or confirm intent) before work piles up uncommitted.
+- **Every change should be properly committed.** Default branch is `main`.
 
 ## Build / run / test
 
