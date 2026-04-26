@@ -6,6 +6,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Unity **6000.4.0f1** project, 3D, **URP**. As of writing, the repo contains no gameplay code yet — only Unity template assets (`Assets/Scenes/SampleScene.unity`, `Assets/InputSystem_Actions.inputactions`, `Assets/TutorialInfo/`) and the rule docs below. Architecture decisions are still open; when one is made, capture it here.
 
+## Teaching context — read this before doing anything
+
+This repo is used for **live university lessons on architecture design patterns**. The instructor codes with Claude Code in front of students; every prompt, response, and tool call is on screen.
+
+- **Only use the design pattern(s) the prompt asks for.** Do not introduce additional patterns, layers, or abstractions — even if the requested approach is suboptimal. No architectural pushback. (Logical bugs, missed requirements, broken behavior — still push back on those.)
+- **Optimize for simplicity, not "good architecture."** Fewest files, fewest classes, fewest moving parts. Lesson time is spent explaining concepts, not navigating code.
+- **Do all the work yourself via Unity MCP and skills.** Scene edits, GameObject creation, component wiring, asset configuration — drive it through the tools. The instructor should not need to do manual Editor steps.
+- **Sound assets live in `Assets/Sounds/`** with descriptive filenames (e.g. `cell-success-click.mp3`). When a sound is needed, pick the appropriately named file from there — do not ask which file to use unless the name is genuinely ambiguous.
+
 ## Authoritative rule docs — read these first
 
 Two docs in `Docs/` define how this codebase must be written. They take precedence over assumptions:
