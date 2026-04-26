@@ -1,6 +1,6 @@
-# CLAUDE.md
+# AGENTS.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to AI coding agents (OpenAI Codex, Google Antigravity, and any other `AGENTS.md`-aware tool) when working with code in this repository.
 
 ## Project
 
@@ -8,11 +8,11 @@ Unity **6000.4.0f1** project, 3D, **URP**. As of writing, the repo contains no g
 
 ## Teaching context — read this before doing anything
 
-This repo is used for **live university lessons on architecture design patterns**. The instructor codes with Claude Code in front of students; every prompt, response, and tool call is on screen.
+This repo is used for **live university lessons on architecture design patterns**. The instructor codes with an AI assistant in front of students; every prompt, response, and tool call is on screen.
 
 - **Only use the design pattern(s) the prompt asks for.** Do not introduce additional patterns, layers, or abstractions — even if the requested approach is suboptimal. No architectural pushback. (Logical bugs, missed requirements, broken behavior — still push back on those.)
 - **Optimize for simplicity, not "good architecture."** Fewest files, fewest classes, fewest moving parts. Lesson time is spent explaining concepts, not navigating code.
-- **Do all the work yourself via Unity MCP and skills.** Scene edits, GameObject creation, component wiring, asset configuration — drive it through the tools. The instructor should not need to do manual Editor steps.
+- **Do all the work yourself via available tools.** Scene edits, GameObject creation, component wiring, asset configuration — drive it through the tools. The instructor should not need to do manual Editor steps.
 - **Sound assets live in `Assets/Sounds/`** with descriptive filenames (e.g. `cell-success-click.mp3`). When a sound is needed, pick the appropriately named file from there — do not ask which file to use unless the name is genuinely ambiguous.
 
 ## Authoritative rule docs — read these first
@@ -38,7 +38,7 @@ The most important constraints (so they aren't missed):
 - **Don't add comments, XML docs, console logging, or custom inspectors** unless explicitly asked. Code should be self-explanatory.
 - **Keep changes focused** — don't refactor or "improve" unrelated code.
 - **When uncertain about an architectural decision, ask** rather than guess. If a well-established library solves the problem, propose it instead of reimplementing.
-- **Update this file** (`CLAUDE.md`) on any significant change to code or architecture — `Docs/Directives.md` requires it.
+- **Update this file** (`AGENTS.md`) on any significant change to code or architecture — `Docs/Directives.md` requires it.
 - **Every change should be properly committed.** Default branch is `main`.
 
 ## Build / run / test
