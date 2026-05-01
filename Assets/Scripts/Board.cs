@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections.Generic;
+
 
 namespace TicTacToe
 {
@@ -8,6 +10,14 @@ namespace TicTacToe
 
         private string _currentPlayer = "X";
         private bool _isGameOver;
+
+        private struct Move
+        {
+            public Cell cell;
+            public string player;
+        }
+
+        private Stack<Move> _moveHistory = new Stack<Move>();
 
         private static readonly int[][] WinningLines = new int[][]
         {
@@ -24,11 +34,13 @@ namespace TicTacToe
         private void OnEnable()
         {
             GameEvents.CellClicked += OnCellClicked;
+            GameEvents.UndoRequested += OnUndoRequested;
         }
 
         private void OnDisable()
         {
             GameEvents.CellClicked -= OnCellClicked;
+            GameEvents.UndoRequested -= OnUndoRequested;
         }
 
         private void OnCellClicked(Cell cell)
@@ -45,8 +57,11 @@ namespace TicTacToe
                 return;
             }
 
+            _moveHistory.Push(new Move { cell = cell, player = _currentPlayer });
+
             cell.SetMark(_currentPlayer);
             GameEvents.MoveMade?.Invoke();
+            GameEvents.UndoAvailabilityChanged?.Invoke(true);
 
             string winner = CheckWinner();
             if (winner != "")
@@ -68,6 +83,17 @@ namespace TicTacToe
             _currentPlayer = _currentPlayer == "X" ? "O" : "X";
         }
 
+        private void OnUndoRequested()
+        {
+            if (_moveHistory.Count == 0)
+                return;
+
+            Move lastMove = _moveHistory.Pop();
+            lastMove.cell.Clear();
+            _currentPlayer = lastMove.player;
+            GameEvents.UndoAvailabilityChanged?.Invoke(_moveHistory.Count > 0);
+        }
+
         private void ResetBoard()
         {
             for (int i = 0; i < _cells.Length; i++)
@@ -76,6 +102,8 @@ namespace TicTacToe
             }
             _currentPlayer = "X";
             _isGameOver = false;
+            _moveHistory.Clear();
+            GameEvents.UndoAvailabilityChanged?.Invoke(false);
         }
 
         private string CheckWinner()
