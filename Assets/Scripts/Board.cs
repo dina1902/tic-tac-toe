@@ -2,8 +2,14 @@ using UnityEngine;
 using System.Collections.Generic;
 
 
+
 namespace TicTacToe
 {
+  public class Move
+{
+    public int cellIndex;
+    public string player;
+}
     public class Board : MonoBehaviour
     {
         [SerializeField] private Cell[] _cells;
@@ -11,11 +17,6 @@ namespace TicTacToe
         private string _currentPlayer = "X";
         private bool _isGameOver;
 
-        private struct Move
-        {
-            public Cell cell;
-            public string player;
-        }
 
         private Stack<Move> _moveHistory = new Stack<Move>();
 
@@ -42,8 +43,7 @@ namespace TicTacToe
             GameEvents.CellClicked -= OnCellClicked;
             GameEvents.UndoRequested -= OnUndoRequested;
         }
-
-        private void OnCellClicked(Cell cell)
+private void OnCellClicked(Cell cell)
         {
             if (_isGameOver)
             {
@@ -57,13 +57,20 @@ namespace TicTacToe
                 return;
             }
 
-            _moveHistory.Push(new Move { cell = cell, player = _currentPlayer });
+            // حفظ الحركة للـ Undo
+            Move newMove = new Move 
+            { 
+                cellIndex = cell.Index, 
+                player = _currentPlayer 
+            };
+            _moveHistory.Push(newMove);
 
             cell.SetMark(_currentPlayer);
             GameEvents.MoveMade?.Invoke();
-            GameEvents.UndoAvailabilityChanged?.Invoke(true);
 
             string winner = CheckWinner();
+
+           
             if (winner != "")
             {
                 _isGameOver = true;
@@ -83,13 +90,33 @@ namespace TicTacToe
             _currentPlayer = _currentPlayer == "X" ? "O" : "X";
         }
 
+        public void UndoLastMove()
+        {
+            if (_moveHistory.Count == 0)
+            {
+                GameEvents.InvalidMove?.Invoke();
+                return;
+            }
+
+
+            if (_isGameOver)
+            {
+                _isGameOver = false;
+            }
+             Move lastMove = _moveHistory.Pop();
+             _cells[lastMove.cellIndex].Clear();
+             _currentPlayer = lastMove.player;
+
+             GameEvents.MoveMade?.Invoke();
+        }
+
         private void OnUndoRequested()
         {
             if (_moveHistory.Count == 0)
                 return;
 
             Move lastMove = _moveHistory.Pop();
-            lastMove.cell.Clear();
+      _cells[lastMove.cellIndex].Clear();
             _currentPlayer = lastMove.player;
             GameEvents.UndoAvailabilityChanged?.Invoke(_moveHistory.Count > 0);
         }
@@ -134,5 +161,11 @@ namespace TicTacToe
             }
             return true;
         }
+
+
+       
     }
+
+
+
 }
